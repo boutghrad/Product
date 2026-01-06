@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الشراء - متجر الديجيتال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استيراد الأنماط الأساسية من index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.2rem 5%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        nav a.active {
+            color: var(--accent);
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 3px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Checkout Container */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .order-summary {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .order-summary h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .order-summary h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .selected-product {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .product-image {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(67, 97, 238, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .product-details h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .product-details p {
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .order-total {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .total-row.total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            border-top: 2px solid #e0e0e0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-form-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .payment-form-container h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .payment-form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .card-icons i {
+            font-size: 1.8rem;
+            color: var(--gray);
+        }
+        
+        .card-icons .fa-cc-visa {
+            color: #1a1f71;
+        }
+        
+        .card-icons .fa-cc-mastercard {
+            color: #eb001b;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .secure-payment {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .secure-payment i {
+            color: var(--success);
+            margin-left: 0.5rem;
+        }
+        
+        .submit-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background: #e11573;
+        }
+        
+        .payment-methods {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .payment-methods h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .payment-option {
+            flex: 1;
+            min-width: 120px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .payment-option.active {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .payment-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-content h2 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .modal-content p {
+            color: var(--dark);
+            margin-bottom: 2rem;
+        }
+        
+        .modal-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .modal-btn:hover {
+            background: var(--secondary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 5% 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .footer-column h3 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent);
+            padding-right: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            nav ul {
+                gap: 1.2rem;
+            }
+            
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                width: 100%;
+                margin-top: 1rem;
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            nav ul li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            nav ul li a {
+                display: block;
+                padding: 0.8rem 0;
+            }
+            
+            .order-summary, .payment-form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-option {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-cart"></i>
+                <span>متجر الديجيتال</span>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="pay.html" class="active cta-button">اشتري الآن</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="page-header">
+            <h1>إتمام عملية الشراء</h1>
+            <p>املأ معلومات الدفع الخاصة بك لإتمام عملية الشراء بشكل آمن</p>
+        </div>
+        
+        <div class="checkout-container">
+            <div class="order-summary">
+                <h2>ملخص الطلب</h2>
+                
+                <div class="selected-product">
+                    <div class="product-image">
+                        <i class="fas fa-book" id="productIcon"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 id="productTitle">دليل التسويق الرقمي المتكامل</h3>
+                        <p id="productCategory">كتاب إلكتروني</p>
+                        <div class="product-price" id="productPrice">49.99 ر.س</div>
+                    </div>
+                </div>
+                
+                <div class="order-total">
+                    <div class="total-row">
+                        <span>سعر المنتج:</span>
+                        <span id="subtotalPrice">49.99 ر.س</span>
+                    </div>
+                    <div class="total-row">
+                        <span>الضريبة (15%):</span>
+                        <span id="taxAmount">7.50 ر.س</span>
+                    </div>
+                    <div class="total-row total">
+                        <span>المجموع:</span>
+                        <span id="totalAmount">57.49 ر.س</span>
+                    </div>
+                </div>
+                
+                <div class="secure-payment">
+                    <i class="fas fa-lock"></i>
+                    <span>عملية دفع آمنة ومشفرة. بياناتك محمية بنسبة 100%.</span>
+                </div>
+            </div>
+            
+            <div class="payment-form-container">
+                <h2>معلومات الدفع</h2>
+                
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardName">اسم حامل البطاقة</label>
+                        <input type="text" id="cardName" class="form-control" placeholder="الاسم كما هو مدون على البطاقة" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardNumber">رقم البطاقة</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="card-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="far fa-credit-card"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">تاريخ الانتهاء</label>
+                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cvv">رمز الأمان (CVV)</label>
+                            <input type="text" id="cvv" class="form-control" placeholder="123" maxlength="4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">البريد الإلكتروني للإيصال</label>
+                        <input type="email" id="email" class="form-control" placeholder="example@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="secure-payment">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>نحن لا نخزن بيانات بطاقتك الائتمانية. تتم جميع المعاملات عبر بوابة دفع آمنة.</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-lock"></i> تأكيد الدفع وإتمام الشراء
+                    </button>
+                </form>
+                
+                <div class="payment-methods">
+                    <h3>طرق الدفع الأخرى</h3>
+                    <div class="payment-options">
+                        <div class="payment-option" id="paypalOption">
+                            <i class="fab fa-paypal"></i>
+                            <span>PayPal</span>
+                        </div>
+                        <div class="payment-option" id="applepayOption">
+                            <i class="fab fa-apple-pay"></i>
+                            <span>Apple Pay</span>
+                        </div>
+                        <div class="payment-option" id="madaOption">
+                            <i class="far fa-credit-card"></i>
+                            <span>مدى</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>تمت عملية الشراء بنجاح!</h2>
+            <p>شكراً لشرائك من متجر الديجيتال. تم إرسال رسالة تأكيد إلى بريدك الإلكتروني مع رابط تحميل المنتج.</p>
+            <p>يمكنك أيضاً تحميل المنتج من <a href="#" style="color: var(--primary); font-weight: 600;">هنا</a>.</p>
+            <button class="modal-btn" id="closeModal">العودة إلى المتجر</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>متجر الديجيتال</h3>
+                <p>متجر متخصص في بيع المنتجات الرقمية عالية الجودة التي تساعدك على تطوير مهاراتك وزيادة إنتاجيتك.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>روابط سريعة</h3>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>معلومات إضافية</h3>
+                <ul>
+                    <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                    <li><a href="#">شروط الاستخدام</a></li>
+                    <li><a href="#">الأسئلة الشائعة</a></li>
+                    <li><a href="#">طرق الدفع</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>اتصل بنا</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> info@digitalstore.com</li>
+                    <li><i class="fas fa-phone"></i> +966 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>جميع الحقوق محفوظة &copy; متجر الديجيتال 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Format card number
+        const cardNumberInput = document.getElementById('cardNumber');
+        
+        cardNumberInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        
+        // Format expiry date
+        const expiryDateInput = document.getElementById('expiryDate');
+        
+        expiryDateInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+        
+        // Product data based on URL parameter
+        const products = {
+            1: {
+                title: "دليل التسويق الرقمي المتكامل",
+                category: "كتب إلكترونية",
+                icon: "fas fa-book",
+                price: 49.99,
+                oldPrice: 79.99
+            },
+            2: {
+                title: "دورة تصميم الويب الاحترافي",
+                category: "دورات فيديو",
+                icon: "fas fa-video",
+                price: 199.99,
+                oldPrice: 299.99
+            },
+            3: {
+                title: "مجموعة قوالب مواقع أعمال",
+                category: "قوالب تصميم",
+                icon: "fas fa-palette",
+                price: 149.99,
+                oldPrice: null
+            },
+            4: {
+                title: "أداة إنشاء الفواتير الذكية",
+                category: "أدوات برمجية",
+                icon: "fas fa-code",
+                price: 89.99,
+                oldPrice: 120.00
+            },
+            5: {
+                title: "تقرير سوق العمل الحر 2023",
+                category: "تقارير وأبحاث",
+                icon: "fas fa-chart-line",
+                price: 59.99,
+                oldPrice: null
+            },
+            6: {
+                title: "مكتبة مؤثرات صوتية احترافية",
+                category: "موارد صوتية",
+                icon: "fas fa-music",
+                price: 129.99,
+                oldPrice: 180.00
+            }
+        };
+        
+        // Get product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('product') || 1;
+        const product = products[productId] || products[1];
+        
+        // Update product details on page
+        document.getElementById('productTitle').textContent = product.title;
+        document.getElementById('productCategory').textContent = product.category;
+        document.getElementById('productIcon').className = product.icon;
+        
+        const subtotal = product.price;
+        const tax = subtotal * 0.15;
+        const total = subtotal + tax;
+        
+        document.getElementById('productPrice').textContent = `${subtotal.toFixed(2)} ر.س`;
+        if (product.oldPrice) {
+            document.getElementById('productPrice').innerHTML = `${subtotal.toFixed(2)} <span style="font-size: 1rem; color: var(--gray); text-decoration: line-through;">${product.oldPrice.toFixed(2)}</span> ر.س`;
+        }
+        
+        document.getElementById('subtotalPrice').textContent = `${subtotal.toFixed(2)} ر.س`;
+        document.getElementById('taxAmount').textContent = `${tax.toFixed(2)} ر.س`;
+        document.getElementById('totalAmount').textContent = `${total.toFixed(2)} ر.س`;
+        
+        // Payment method selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                paymentOptions.forEach(opt => opt.classList.remove('active'));
+                // Add active class to clicked option
+                option.classList.add('active');
+                
+                // Show appropriate form based on selection
+                const paymentForm = document.getElementById('paymentForm');
+                if (option.id === 'paypalOption') {
+                    paymentForm.innerHTML = `
+                        <div class="secure-payment">
+                            <i class="fab fa-paypal" style="color: #003087;"></i>
+                            <span>سيتم توجيهك إلى صفحة PayPal الآمنة لإتمام عملية الدفع.</span>
+                        </div>
+                        <button type="button" class="submit-btn" id="paypalBtn">
+                            <i class="fab fa-paypal"></i> الدفع عبر PayPal
+                        </button>
+                    `;
+                    
+                    document.getElementById('paypalBtn').addEventListener('click', () => {
+                        showSuccessModal();
+                    });
+                } else if (option.id === 'applepayOption') {
+                    paymentForm.innerHTML = `
+                        <div class="secure-payment">
+                            <i class="fab fa-apple" style="color: #000;"></i>
+                            <span>سيتم فتح نافذة Apple Pay لإتمام عملية الدفع.</span>
+                        </div>
+                        <button type="button" class="submit-btn" id="applepayBtn">
+                            <i class="fab fa-apple-pay"></i> الدفع عبر Apple Pay
+                        </button>
+                    `;
+                    
+                    document.getElementById('applepayBtn').addEventListener('click', () => {
+                        showSuccessModal();
+                    });
+                } else if (option.id === 'madaOption') {
+                    paymentForm.innerHTML = `
+                        <div class="secure-payment">
+                            <i class="far fa-credit-card" style="color: #6fcc49;"></i>
+                            <span>سيتم توجيهك إلى صفحة مدى الآمنة لإتمام عملية الدفع.</span>
+                        </div>
+                        <button type="button" class="submit-btn" id="madaBtn">
+                            <i class="far fa-credit-card"></i> الدفع عبر مدى
+                        </button>
+                    `;
+                    
+                    document.getElementById('madaBtn').addEventListener('click', () => {
+                        showSuccessModal();
+                    });
+                } else {
+                    // Restore original form
+                    location.reload();
+                }
+            });
+        });
+        
+        // Form submission
+        const paymentForm = document.getElementById('paymentForm');
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showSuccessModal();
+        });
+        
+        function showSuccessModal() {
+            successModal.style.display = 'flex';
+        }
+        
+        closeModalBtn.addEventListener('click', () => {
+            successModal.style.display = 'none';
+            window.location.href = 'products.html';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.style.display = 'none';
+                window.location.href = 'products.html';
+            }
+        });
+    </script>
+</body>
+</html>
